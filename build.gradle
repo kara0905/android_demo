@@ -13,6 +13,8 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
+        classpath 'com.android.tools:r8:2.1.75'
+
         classpath 'com.android.tools.build:gradle:3.6.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
@@ -32,6 +34,8 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+
     }
 }
 

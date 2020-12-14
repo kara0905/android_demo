@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+def keystorePropertiesFile = rootProject.file("keystore.properties")
 
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -16,12 +22,63 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            keyAlias keystoreProperties['RELEASE_KEY_ALIAS']
+            keyPassword keystoreProperties['RELEASE_KEY_PASSWORD']
+            storeFile file(keystoreProperties['RELEASE_STORE_FILE'])
+            storePassword keystoreProperties['RELEASE_STORE_PASSWORD']
+
+        }
+        debug {
+            keyAlias keystoreProperties['RELEASE_KEY_ALIAS']
+            keyPassword keystoreProperties['RELEASE_KEY_PASSWORD']
+            storeFile file(keystoreProperties['RELEASE_STORE_FILE'])
+            storePassword keystoreProperties['RELEASE_STORE_PASSWORD']
+
         }
     }
+
+    buildTypes {
+        release {
+            // buildConfigField  "String",  "API_URL", "\"http:// test. example. com/ api\""
+            // buildConfigField "boolean", "LOG_HTTP_CALLS", "false"
+            //  buildConfigField "boolean", "LOG_DEBUG", "false" // 不显示Log
+            minifyEnabled true // 开启混淆
+            shrinkResources true //开启资源压缩
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release  //签名
+        }
+        debug {
+            //buildConfigField  "String",  "API_URL", "\"http:// test. example. com/ api\""
+            // buildConfigField "boolean", "LOG_HTTP_CALLS", "false"
+            signingConfig signingConfigs.release  //签名
+
+        }
+    }
+
+
+    applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                Calendar calendar = Calendar.getInstance(Locale.CHINA);
+                def buildDate = String.format(Locale.CHINA, "%04d%02d%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+                def versionName = defaultConfig.versionName
+                def versionCode = defaultConfig.versionCode
+                //android studio3.0之前的写法
+                //  output->output.outputFile=new File(output.outputFile.parent,output.outputFile.name.replace(".apk","-"+defaultConfig.versionName+".apk"))
+                //android studio3.0的写法
+                //项目名-版本名-版本号-release/debug.apk
+                if (variant.buildType.name.equals('release')) {
+                    outputFileName = "${project.archivesBaseName}-v${versionName}-c${versionCode}-${buildDate}-release.apk"
+                } else {
+                    outputFileName = "${project.archivesBaseName}-v${versionName}-c${versionCode}-${buildDate}-debug.apk"
+                }
+            }
+    }
+
 
 }
 
@@ -31,7 +88,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
