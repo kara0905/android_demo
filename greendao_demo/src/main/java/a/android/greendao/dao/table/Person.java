@@ -12,6 +12,10 @@ public class Person {
     private String name;
     private String gender;
 
+    public Person(String name, String gender) {
+        this.name = name;
+        this.gender = gender;
+    }
 
     @Generated(hash = 1769625376)
     public Person(Long id, String name, String gender) {
@@ -23,7 +27,6 @@ public class Person {
     @Generated(hash = 1024547259)
     public Person() {
     }
-    
 
     public String getName() {
         return name;
@@ -42,14 +45,6 @@ public class Person {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
-    }
 
     public Long getId() {
         return this.id;
@@ -57,5 +52,14 @@ public class Person {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }

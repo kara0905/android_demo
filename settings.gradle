@@ -1,3 +1,6 @@
+include ':websocket_client_demo'
+include ':ndk_demo'
+include ':logApp'
 rootProject.name='android_demos'
 include ':app', ':annotationprocess', ':annotation_demo'
 include ':greendao_demo'

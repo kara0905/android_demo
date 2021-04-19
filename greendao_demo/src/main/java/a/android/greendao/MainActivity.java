@@ -8,12 +8,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import a.android.greendao.dao.PersonDao;
+import a.android.greendao.dao.DaoMaster;
+import a.android.greendao.dao.DaoSession;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
 
-import a.android.greendao.dao.PersonDao;
 import a.android.greendao.dao.table.Person;
+import a.android.greendao.utils.LogUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,14 +56,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_add:
-                if (TextUtils.isEmpty(name))
-                    return;
-                person = App.getPersonDao().queryBuilder().where(PersonDao.Properties.Name.eq(name)).build().unique();
-                if (person == null) {
-                    person = new Person();
-                    person.setName(name);
-                    App.getPersonDao().insert(person);
+//                if (TextUtils.isEmpty(name))
+//                    return;
+//                person = App.getPersonDao().queryBuilder().where(PersonDao.Properties.Name.eq(name)).build().unique();
+//                if (person == null) {
+//                    person = new Person();
+//                    person.setName(name);
+//                    App.getPersonDao().insert(person);
+//                }
+
+
+                // 异常捕获
+//                try {
+//                    person = new Person(1L, "zzz", "male");
+//                    long insert = App.getPersonDao().insert(person);
+//                    tv_content.setText("insert" + insert);
+//                }catch (Exception e){
+//                    LogUtil.e(e.getLocalizedMessage());
+//                }
+
+                for (int i = 0; i < 10; i++) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < 100; i++) {
+                                for (int j = 0; j < 1000; j++) {
+                                    person = new Person("zzz" + i+"_"+j, "male");
+                                    long insert = App.getPersonDao().insert(person);
+                                    LogUtil.e(i+"_"+j);
+                                }
+
+                            }
+                            LogUtil.e("e.getLocalizedMessage()");
+
+
+                        }
+                    }).start();
                 }
+
+
                 break;
 
             case R.id.btn_remove:
@@ -71,11 +108,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_query:
                 StringBuilder content = new StringBuilder();
-                personList = App.getPersonDao().queryBuilder().list();
+                personList = App.getPersonDao().queryBuilder().where(PersonDao.Properties.Name.eq(name)).list();
                 for (Person person : personList) {
                     content.append(person.toString()).append("\n");
                 }
                 tv_content.setText(content.toString());
+//                QueryBuilder<Person> qb = App.getPersonDao().queryBuilder();
+//                List<Person> list2 = qb.where(PersonDao.Properties.Name.eq(name),
+//                        qb.and(PersonDao.Properties.Id.gt(5),
+//                                PersonDao.Properties.Id.le(50))).list();
+
                 break;
             case R.id.btn_clear:
                 App.getPersonDao().deleteAll();

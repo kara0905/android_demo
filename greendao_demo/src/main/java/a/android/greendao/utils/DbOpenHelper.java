@@ -3,12 +3,12 @@ package a.android.greendao.utils;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import a.android.greendao.dao.DaoMaster;
-import a.android.greendao.dao.PersonDao;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 
 import org.greenrobot.greendao.database.StandardDatabase;
-
+import a.android.greendao.dao.PersonDao;
+import a.android.greendao.dao.DaoMaster;
+import a.android.greendao.dao.DaoSession;
 public class DbOpenHelper extends DaoMaster.DevOpenHelper {
 
     public DbOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {

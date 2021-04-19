@@ -7,6 +7,8 @@
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-5.6.4/wrapper/dists/gradle-5.6.4-all/5nm3960jl663a4oi3tas819l1/gradle-5.6.4" />
+        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -14,9 +16,13 @@
             <option value="$PROJECT_DIR$/annotationprocess" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/greendao_demo" />
+            <option value="$PROJECT_DIR$/logApp" />
+            <option value="$PROJECT_DIR$/ndk_demo" />
+            <option value="$PROJECT_DIR$/websocket_client_demo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
